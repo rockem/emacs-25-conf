@@ -5,7 +5,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (web-mode yaml-mode auto-complete counsel ace-window org-bullets which-key try use-package))))
+    (exec-path-from-shell markdown-mode web-mode yaml-mode auto-complete counsel ace-window org-bullets which-key try use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -36,6 +36,7 @@
       ring-bell-function nil)
 (show-paren-mode t)
 
+
 ;; Melpa
 (require 'package)
 (setq package-enable-at-startup nil)
@@ -54,6 +55,12 @@
 (unless (package-installed-p 'use-package)
 	(package-refresh-contents)
 	(package-install 'use-package))
+
+
+(use-package exec-path-from-shell
+  :ensure t
+  :config
+  (exec-path-from-shell-initialize))
 
 (use-package try
 	:ensure t)

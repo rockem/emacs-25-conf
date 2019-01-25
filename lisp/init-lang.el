@@ -36,8 +36,8 @@
 	      (lambda ()
 		(visual-line-mode t)
 		(writegood-mode t)
-		(flyspell-mode t)))
-    (setq markdown-command "pandoc --smart -f markdown -t html")))
+		(flyspell-mode t)))))
+    ;; (setq markdown-command "pandoc --smart -f markdown -t html")))
 
 
     
