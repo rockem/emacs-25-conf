@@ -5,7 +5,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (counsel ace-window org-bullets which-key try use-package))))
+    (auto-complete counsel ace-window org-bullets which-key try use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -18,6 +18,10 @@
 (if window-system
     (tool-bar-mode -1)
 )
+
+(desktop-save-mode 1)
+(load-theme 'tsdh-light)
+(set-background-color "#FFFCFA")
 
 (require 'package)
 (setq package-enable-at-startup nil)
@@ -88,3 +92,20 @@
     (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
     (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
     ))
+
+(use-package avy
+  :ensure t
+  :bind ("M-s" . avy-goto-char))
+
+(use-package auto-complete
+  :ensure t
+  :init
+  (progn
+    (ac-config-default)
+    (global-auto-complete-mode t)
+    ))
+
+;; Auto save
+(setq auto-save-visited-file-name t)
+
+(set-face-attribute 'default nil :family "Menlo" :height 140)
