@@ -5,7 +5,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (auto-complete counsel ace-window org-bullets which-key try use-package))))
+    (web-mode yaml-mode auto-complete counsel ace-window org-bullets which-key try use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -21,14 +21,34 @@
 
 (desktop-save-mode 1)
 (load-theme 'tsdh-light)
-(set-background-color "#FFFCFA")
+(set-background-color "#FFFDFB")
 
+(setq-default indicate-empty-lines t)
+(when (not indicate-empty-lines)  
+  (toggle-indicate-empty-lines))
+
+(setq make-backup-files nil)
+(defalias 'yes-or-no-p 'y-or-n-p)
+
+(setq echo-keystrokes 0.1
+      use-dialog-box nil
+      visible-bell t
+      ring-bell-function nil)
+(show-paren-mode t)
+
+;; Melpa
 (require 'package)
 (setq package-enable-at-startup nil)
 (add-to-list 'package-archives
 	     '("melpa" . "https://melpa.org/packages/"))
 
 (package-initialize)
+
+;; Local
+(defvar lisp-dir
+  (expand-file-name "lisp" user-emacs-directory))
+(add-to-list 'load-path lisp-dir)
+
 
 ;; Bootstrap `use-package'
 (unless (package-installed-p 'use-package)
@@ -108,4 +128,6 @@
 ;; Auto save
 (setq auto-save-visited-file-name t)
 
-(set-face-attribute 'default nil :family "Menlo" :height 140)
+(set-face-attribute 'default nil :family "Menlo" :height 130)
+
+(require 'init-lang)
