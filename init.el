@@ -37,6 +37,8 @@
 (show-paren-mode t)
 
 
+(setq-default cursor-type 'bar) 
+
 ;; Melpa
 (require 'package)
 (setq package-enable-at-startup nil)

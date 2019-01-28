@@ -36,9 +36,8 @@
 	      (lambda ()
 		(visual-line-mode t)
 		(writegood-mode t)
-		(flyspell-mode t)))))
-    ;; (setq markdown-command "pandoc --smart -f markdown -t html")))
-
+		(flyspell-mode t)))
+    (setq markdown-command "pandoc -c file:///Users/elisegal/.emacs.d/support/github-pandoc.css --from markdown -t html5 --mathjax --highlight-style pygments --standalone")))
 
     
 (provide 'init-lang)
