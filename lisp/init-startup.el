@@ -8,6 +8,8 @@
 	  (set-background-color "#FFFDFB")))
 
 
+(when (member "Menlo" (font-family-list)) (set-frame-font "Menlo-13" t t))
+
 (setq-default indicate-empty-lines t)
 (when (not indicate-empty-lines)  
   (toggle-indicate-empty-lines))
