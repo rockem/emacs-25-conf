@@ -22,12 +22,6 @@
 
 (package-initialize)
 
-;; Local
-(defvar lisp-dir
-  (expand-file-name "lisp" user-emacs-directory))
-(add-to-list 'load-path lisp-dir)
-
-
 ;; Bootstrap `use-package'
 (unless (package-installed-p 'use-package)
 	(package-refresh-contents)

@@ -1,3 +1,4 @@
+
 #+TITLE: My Emacs Settings
 
 * Bootstrap
@@ -12,7 +13,7 @@
 	  (set-background-color "#FFFDFB")))
 
 
-(when (member "Menlo" (font-family-list)) (set-frame-font "Menlo-13" t))
+(when (member "Menlo" (font-family-list)) (set-frame-font "Menlo-14" t))
 
 (setq-default indicate-empty-lines t)
 (when (not indicate-empty-lines)  
@@ -105,11 +106,10 @@
     (global-auto-complete-mode t)
     ))
 
-(provide 'init-startup)
 #+END_SRC
 * Language support
 ** Yaml
-  #+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp
     (use-package yaml-mode
       :ensure t
       :config
@@ -147,7 +147,11 @@
                   (writegood-mode t)
                   (flyspell-mode t)))
       (setq markdown-command "pandoc -c file:///Users/elisegal/.emacs.d/support/github-pandoc.css --from markdown -t html5 --mathjax --highlight-style pygments --standalone")))
-#+END_SRC  (use-package magit
+#+END_SRC  
+
+* Git
+#+BEGIN_SRC emacs-lisp
+(use-package magit
     :ensure t)
 
   (global-set-key (kbd "C-x g") 'magit-status)
