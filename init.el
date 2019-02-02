@@ -33,8 +33,8 @@
 	(package-refresh-contents)
 	(package-install 'use-package))
 
-
-(require 'init-startup)
-(require 'init-lang)
-(require 'init-org)
-(require 'init-git)
+;; Load all settings
+(require 'org)
+(org-babel-load-file
+ (expand-file-name "settings.org"
+                   user-emacs-directory))

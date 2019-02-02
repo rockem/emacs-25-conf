@@ -1,3 +1,7 @@
+#+TITLE: emacs settings
+
+* Bootstrap
+#+BEGIN_SRC emacs-lisp
 (setq inhibit-splash-screen t
       initial-scratch-message nil
       initial-major-mode 'org-mode)
@@ -8,7 +12,7 @@
 	  (set-background-color "#FFFDFB")))
 
 
-(when (member "Menlo" (font-family-list)) (set-frame-font "Menlo-13" t t))
+(when (member "Menlo" (font-family-list)) (set-frame-font "Menlo-13" t))
 
 (setq-default indicate-empty-lines t)
 (when (not indicate-empty-lines)  
@@ -102,3 +106,84 @@
     ))
 
 (provide 'init-startup)
+#+END_SRC
+* Language support
+** Yaml
+  #+BEGIN_SRC emacs-lisp
+    (use-package yaml-mode
+      :ensure t
+      :config
+      (progn
+        (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
+        (add-to-list 'auto-mode-alist '("\\.yaml$" . yaml-mode))))
+  #+END_SRC
+** Web
+#+BEGIN_SRC emacs-lisp
+  (use-package web-mode
+    :ensure t
+    :init
+    (setq web-mode-style-padding 2
+          web-mode-script-padding 2
+          web-mode-markup-indent-offset 2
+          web-mode-css-indent-offset 2
+          web-mode-code-indent-offset 2)
+    :config
+    (progn 
+      (add-to-list 'auto-mode-alist '("\\.hbs$" . web-mode))
+      (add-to-list 'auto-mode-alist '("\\.erb$" . web-mode))
+      (add-to-list 'auto-mode-alist '("\\.html$" . web-mode))))
+#+END_SRC
+** Markdown
+#+BEGIN_SRC emacs-lisp
+  (use-package markdown-mode
+    :ensure t  
+    :config
+    (progn
+      (add-to-list 'auto-mode-alist '("\\.md$" . markdown-mode))
+      (add-to-list 'auto-mode-alist '("\\.mdown$" . markdown-mode))
+      (add-hook 'markdown-mode-hook
+                (lambda ()
+                  (visual-line-mode t)
+                  (writegood-mode t)
+                  (flyspell-mode t)))
+      (setq markdown-command "pandoc -c file:///Users/elisegal/.emacs.d/support/github-pandoc.css --from markdown -t html5 --mathjax --highlight-style pygments --standalone")))
+#+END_SRC
+* Git
+#+BEGIN_SRC emacs-lisp
+  (use-package magit
+    :ensure t)
+
+  (global-set-key (kbd "C-x g") 'magit-status)
+
+  (use-package git-gutter
+    :ensure t
+    :config
+    (global-git-gutter-mode t))
+
+  (add-to-list 'auto-mode-alist '("\\.gitconfig$" . conf-mode))
+#+END_SRC
+* Org mode
+#+BEGIN_SRC emacs-lisp
+  (use-package org-bullets
+    :ensure t
+    :config
+    (add-hook 'org-mode-hook 'org-bullets-mode))
+
+  (setq org-log-done t
+        org-todo-keywords '((sequence "TODO" "INPROGRESS" "DONE"))
+        org-todo-keyword-faces '(("INPROGRESS" . (:foreground "blue" :weight bold))))
+  (add-hook 'org-mode-hook
+            (lambda ()
+              (flyspell-mode)))
+
+  (use-package writegood-mode
+    :ensure t
+    :config  
+    (add-hook 'org-mode-hook
+              (lambda ()
+                (writegood-mode))))
+
+  (setq org-src-tab-acts-natively t)
+  (add-hook 'org-mode-hook 'org-indent-mode)
+  (add-hook 'org-mode-hook (lambda () (abbrev-mode 1)))
+#+END_SRC
