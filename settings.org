@@ -195,3 +195,10 @@
   (add-hook 'org-mode-hook 'org-indent-mode)
   (add-hook 'org-mode-hook (lambda () (abbrev-mode 1)))
 #+END_SRC
+* Evil mode
+#+BEGIN_SRC emacs-lisp
+  (use-package evil
+    :ensure t
+    :config
+    (evil-mode))
+#+END_SRC
