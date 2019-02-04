@@ -3,108 +3,85 @@
 
 * Bootstrap
 #+BEGIN_SRC emacs-lisp
-    (setq inhibit-splash-screen t
-          initial-scratch-message nil
-          initial-major-mode 'org-mode)
-    (if window-system
-       (progn (tool-bar-mode -1)
-              (desktop-save-mode 1)
-              (load-theme 'tsdh-light)
-              (set-background-color "#FFFDFB")))
+
+  (setq make-backup-files nil)
+  (defalias 'yes-or-no-p 'y-or-n-p)
+
+  (setq echo-keystrokes 0.1
+        use-dialog-box nil)
+
+  (setq-default cursor-type 'bar)
 
 
-    (when (member "Menlo" (font-family-list)) (set-frame-font "Menlo-14" t))
+  (use-package exec-path-from-shell
+    :ensure t
+    :config
+    (exec-path-from-shell-initialize))
 
-    (setq-default indicate-empty-lines t)
-    (when (not indicate-empty-lines)  
-      (toggle-indicate-empty-lines))
+  (use-package try
+    :ensure t)
 
-    (setq make-backup-files nil)
-    (defalias 'yes-or-no-p 'y-or-n-p)
+  (use-package which-key
+    :ensure t 
+    :config
+    (which-key-mode))
 
-    (setq echo-keystrokes 0.1
-          use-dialog-box nil
-          visible-bell t
-          ring-bell-function nil)
+  (use-package ace-window
+    :ensure t
+    :init
+    (progn
+      (global-set-key [remap other-window] 'ace-window)
+      (custom-set-faces
+       '(aw-leading-char-face
+         ((t (:inherit ace-jump-face-foreground :height 3.0))))) 
+      ))
 
-    (show-paren-mode t)
-    (setq-default cursor-type 'bar)
+  ;; (setq ido-enable-flex-matching t)
+  ;; (setq ido-everywhere t)
+  ;; (ido-mode 1)
 
+  (defalias 'list-buffers 'ibuffer-other-window)
 
-    (use-package exec-path-from-shell
-      :ensure t
-      :config
-      (exec-path-from-shell-initialize))
+  ;; it looks like counsel is a requirement for swiper
+  (use-package counsel
+    :ensure t
+    )
 
-    (use-package try
-            :ensure t)
+  (use-package swiper
+    :ensure try
+    :config
+    (progn
+      (ivy-mode 1)
+      (setq ivy-use-virtual-buffers t)
+      (global-set-key "\C-s" 'swiper)
+      (global-set-key (kbd "C-c C-r") 'ivy-resume)
+      (global-set-key (kbd "<f6>") 'ivy-resume)
+      (global-set-key (kbd "M-x") 'counsel-M-x)
+      (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+      (global-set-key (kbd "<f1> f") 'counsel-describe-function)
+      (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
+      (global-set-key (kbd "<f1> l") 'counsel-load-library)
+      (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
+      (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
+      (global-set-key (kbd "C-c g") 'counsel-git)
+      (global-set-key (kbd "C-c j") 'counsel-git-grep)
+      (global-set-key (kbd "C-c k") 'counsel-ag)
+      (global-set-key (kbd "C-x l") 'counsel-locate)
+      (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
+      (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
+      ))
 
-    (use-package which-key
-            :ensure t 
-            :config
-            (which-key-mode))
+  (use-package avy
+    :ensure t
+    :bind ("M-s" . avy-goto-char))
 
-    (use-package org-bullets
-      :ensure t
-      :config
-      (add-hook 'org-mode-hook 'org-bullets-mode))
-
-    (use-package ace-window
-      :ensure t
-      :init
-      (progn
-        (global-set-key [remap other-window] 'ace-window)
-        (custom-set-faces
-         '(aw-leading-char-face
-           ((t (:inherit ace-jump-face-foreground :height 3.0))))) 
-        ))
-
-    ;; (setq ido-enable-flex-matching t)
-    ;; (setq ido-everywhere t)
-    ;; (ido-mode 1)
-
-    (defalias 'list-buffers 'ibuffer-other-window)
-
-    ;; it looks like counsel is a requirement for swiper
-    (use-package counsel
-      :ensure t
-      )
-
-    (use-package swiper
-      :ensure try
-      :config
-      (progn
-        (ivy-mode 1)
-        (setq ivy-use-virtual-buffers t)
-        (global-set-key "\C-s" 'swiper)
-        (global-set-key (kbd "C-c C-r") 'ivy-resume)
-        (global-set-key (kbd "<f6>") 'ivy-resume)
-        (global-set-key (kbd "M-x") 'counsel-M-x)
-        (global-set-key (kbd "C-x C-f") 'counsel-find-file)
-        (global-set-key (kbd "<f1> f") 'counsel-describe-function)
-        (global-set-key (kbd "<f1> v") 'counsel-describe-variable)
-        (global-set-key (kbd "<f1> l") 'counsel-load-library)
-        (global-set-key (kbd "<f2> i") 'counsel-info-lookup-symbol)
-        (global-set-key (kbd "<f2> u") 'counsel-unicode-char)
-        (global-set-key (kbd "C-c g") 'counsel-git)
-        (global-set-key (kbd "C-c j") 'counsel-git-grep)
-        (global-set-key (kbd "C-c k") 'counsel-ag)
-        (global-set-key (kbd "C-x l") 'counsel-locate)
-        (global-set-key (kbd "C-S-o") 'counsel-rhythmbox)
-        (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
-        ))
-
-    (use-package avy
-      :ensure t
-      :bind ("M-s" . avy-goto-char))
-
-    (use-package auto-complete
-      :ensure t
-      :init
-      (progn
-        (ac-config-default)
-        (global-auto-complete-mode t)
-        ))
+  (use-package auto-complete
+    :ensure t
+    :init
+    (progn
+      (ac-config-default)
+      (global-auto-complete-mode t)
+      ))
 
   (defun reload-init-file ()
     (interactive)
@@ -114,27 +91,63 @@
 #+END_SRC
 * Display
 #+BEGIN_SRC emacs-lisp
+  (setq inhibit-splash-screen t
+        initial-scratch-message nil
+        initial-major-mode 'org-mode)
+
+  (if window-system
+      (progn (tool-bar-mode -1)
+             (desktop-save-mode 1)
+             (load-theme 'tsdh-light)
+             (set-background-color "#FFFDFB")))
+
+  (when (member "Menlo" (font-family-list)) (set-frame-font "Menlo-14" t))
+
+  ;; Indicate empty lines
+  (setq-default indicate-empty-lines t)
+  (when (not indicate-empty-lines)  
+    (toggle-indicate-empty-lines))
+
+  (show-paren-mode t)
+
   (use-package powerline
     :ensure t
     :config
     (powerline-default-theme))
-  (use-package nlinum-relative
-    :ensure t
-    :config
-    ;; something else you want
-    (nlinum-relative-setup-evil)
-    (add-hook 'prog-mode-hook 'nlinum-relative-mode))
-  #+END_SRC
+
+  ;; (use-package nlinum-relative
+  ;;   :ensure t
+  ;;   :init
+  ;;   (setq nlinum-relative-redisplay-delay 0)
+  ;;   :config
+  ;;   (nlinum-relative-setup-evil) 
+  ;;   (add-hook 'prog-mode-hook 'nlinum-relative-mode))
+
+(setq-default display-line-numbers-type 'visual
+              display-line-numbers-current-absolute t
+              display-line-numbers-widen t)
+(add-hook 'text-mode-hook #'display-line-numbers-mode)
+(add-hook 'prog-mode-hook #'display-line-numbers-mode)
+
+  ;; Subtle flash on error
+  (setq ring-bell-function
+        (lambda ()
+          (let ((orig-fg (face-foreground 'mode-line)))
+            (set-face-foreground 'mode-line "#F2804F")
+            (run-with-idle-timer 0.1 nil
+                                 (lambda (fg) (set-face-foreground 'mode-line fg))
+                                 orig-fg))))
+#+END_SRC
 * Language support
 ** Yaml
 #+BEGIN_SRC emacs-lisp
-    (use-package yaml-mode
-      :ensure t
-      :config
-      (progn
-        (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
-        (add-to-list 'auto-mode-alist '("\\.yaml$" . yaml-mode))))
-  #+END_SRC
+  (use-package yaml-mode
+    :ensure t
+    :config
+    (progn
+      (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
+      (add-to-list 'auto-mode-alist '("\\.yaml$" . yaml-mode))))
+#+END_SRC
 ** Web
 #+BEGIN_SRC emacs-lisp
   (use-package web-mode
@@ -169,7 +182,7 @@
 
 * Git
 #+BEGIN_SRC emacs-lisp
-(use-package magit
+  (use-package magit
     :ensure t)
 
   (global-set-key (kbd "C-x g") 'magit-status)
