@@ -91,37 +91,37 @@
 #+END_SRC
 * Display
 #+BEGIN_SRC emacs-lisp
-    (setq inhibit-splash-screen t
-          initial-scratch-message nil
-          initial-major-mode 'org-mode)
+  (setq inhibit-splash-screen t
+        initial-scratch-message nil
+        initial-major-mode 'org-mode)
 
-    (if window-system
-        (progn (tool-bar-mode -1)
-               (desktop-save-mode 1)
-               (load-theme 'tsdh-light)
-               (set-background-color "#FFFDFB")))
+  (if window-system
+      (progn (tool-bar-mode -1)
+             (desktop-save-mode 1)
+             (load-theme 'tsdh-light)
+             (set-background-color "#FFFDFB")))
 
-    (when (member "Menlo" (font-family-list)) (set-frame-font "Menlo-14" t))
+  (when (member "Menlo" (font-family-list)) (set-frame-font "Menlo-14" t))
 
-    ;; Indicate empty lines
-    (setq-default indicate-empty-lines t)
-    (when (not indicate-empty-lines)  
-      (toggle-indicate-empty-lines))
+  ;; Indicate empty lines
+  (setq-default indicate-empty-lines t)
+  (when (not indicate-empty-lines)  
+    (toggle-indicate-empty-lines))
 
-    (show-paren-mode t)
+  (show-paren-mode t)
 
-    (use-package powerline
-      :ensure t
-      :config
-      (powerline-default-theme))
+  (use-package powerline
+    :ensure t
+    :config
+    (powerline-default-theme))
 
-    ;; (use-package nlinum-relative
-    ;;   :ensure t
-    ;;   :init
-    ;;   (setq nlinum-relative-redisplay-delay 0)
-    ;;   :config
-    ;;   (nlinum-relative-setup-evil) 
-    ;;   (add-hook 'prog-mode-hook 'nlinum-relative-mode))
+  ;; (use-package nlinum-relative
+  ;;   :ensure t
+  ;;   :init
+  ;;   (setq nlinum-relative-redisplay-delay 0)
+  ;;   :config
+  ;;   (nlinum-relative-setup-evil) 
+  ;;   (add-hook 'prog-mode-hook 'nlinum-relative-mode))
 
   (setq-default display-line-numbers-type 'visual
                 display-line-numbers-current-absolute t
@@ -129,14 +129,14 @@
   (add-hook 'text-mode-hook #'display-line-numbers-mode)
   (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 
-    ;; Subtle flash on error
-    (setq ring-bell-function
-          (lambda ()
-            (let ((orig-fg (face-foreground 'mode-line)))
-              (set-face-foreground 'mode-line "#F2804F")
-              (run-with-idle-timer 0.1 nil
-                                   (lambda (fg) (set-face-foreground 'mode-line fg))
-                                   orig-fg))))
+  ;; Subtle flash on error
+  (setq ring-bell-function
+        (lambda ()
+          (let ((orig-fg (face-foreground 'mode-line)))
+            (set-face-foreground 'mode-line "#F2804F")
+            (run-with-idle-timer 0.1 nil
+                                 (lambda (fg) (set-face-foreground 'mode-line fg))
+                                 orig-fg))))
 #+END_SRC
 * Language support
 ** Yaml
@@ -225,4 +225,19 @@
     :ensure t
     :config
     (evil-mode))
+#+END_SRC 
+* Utilities
+** Follow links
+#+BEGIN_SRC emacs-lisp
+  (setq browse-url-generic-program "open")
+  (defun open-link-or-image-or-url ()
+    "Opens the current link or image or current page's uri or any url-like text under cursor."
+    (interactive)
+    (let (url)
+      (if (string= major-mode "w3m-mode")
+          (setq url (or (w3m-anchor) (w3m-image) w3m-current-url)))
+      (browse-url-generic (if url url (car (browse-url-interactive-arg "URL: "))))
+      ))
+
+  (global-set-key (kbd "C-c b") 'open-link-or-image-or-url)
 #+END_SRC
