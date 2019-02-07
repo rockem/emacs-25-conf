@@ -234,4 +234,19 @@
     :ensure t
     :config
     (evil-mode))
+#+END_SRC 
+* Utilities
+** Follow links
+#+BEGIN_SRC emacs-lisp
+  (setq browse-url-generic-program "open")
+  (defun open-link-or-image-or-url ()
+    "Opens the current link or image or current page's uri or any url-like text under cursor."
+    (interactive)
+    (let (url)
+      (if (string= major-mode "w3m-mode")
+          (setq url (or (w3m-anchor) (w3m-image) w3m-current-url)))
+      (browse-url-generic (if url url (car (browse-url-interactive-arg "URL: "))))
+      ))
+
+  (global-set-key (kbd "C-c b") 'open-link-or-image-or-url)
 #+END_SRC
