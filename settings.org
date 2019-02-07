@@ -123,11 +123,12 @@
   ;;   (nlinum-relative-setup-evil) 
   ;;   (add-hook 'prog-mode-hook 'nlinum-relative-mode))
 
-(setq-default display-line-numbers-type 'visual
-              display-line-numbers-current-absolute t
-              display-line-numbers-widen t)
-(add-hook 'text-mode-hook #'display-line-numbers-mode)
-(add-hook 'prog-mode-hook #'display-line-numbers-mode)
+  (setq-default display-line-numbers-type 'visual
+                display-line-numbers-current-absolute t
+                display-line-numbers-width 4
+                display-line-numbers-widen t)
+  (add-hook 'text-mode-hook #'display-line-numbers-mode)
+  (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 
   ;; Subtle flash on error
   (setq ring-bell-function
@@ -147,6 +148,14 @@
     (progn
       (add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
       (add-to-list 'auto-mode-alist '("\\.yaml$" . yaml-mode))))
+#+END_SRC
+** Python
+#+BEGIN_SRC emacs-lisp
+  (use-package elpy
+    :commands 
+    elpy-enable
+    :init 
+    (elpy-enable))
 #+END_SRC
 ** Web
 #+BEGIN_SRC emacs-lisp
