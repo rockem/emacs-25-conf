@@ -100,7 +100,7 @@
              (load-theme 'tsdh-light)
              (set-background-color "#FFFDFB")))
 
-  (when (member "Menlo" (font-family-list)) (set-frame-font "Menlo-14" t))
+  (when (member "Menlo" (font-family-list)) (set-frame-font "Menlo-13" t))
 
   ;; Indicate empty lines
   (setq-default indicate-empty-lines t)
@@ -151,9 +151,10 @@
 ** Python
 #+BEGIN_SRC emacs-lisp
   (use-package elpy
-    :commands 
-    elpy-enable
-    :init 
+    :ensure t
+    :init
+    (setq elpy-rpc-python-command "python3")
+    :config
     (elpy-enable))
 #+END_SRC
 ** Web
@@ -195,6 +196,40 @@
     (progn
       (add-to-list 'auto-mode-alist '("\\.gradle$" . groovy-mode))
       (add-to-list 'auto-mode-alist '("\\.groovy$" . groovy-mode))))
+#+END_SRC
+** CSV 
+#+BEGIN_SRC emacs-lisp
+  (use-package csv-mode
+    :ensure t
+    :config
+    (add-to-list 'auto-mode-alist '("\\.csv$" . csv-mode)))
+
+#+END_SRC
+** Json 
+#+BEGIN_SRC emacs-lisp
+  (use-package json-mode
+    :ensure t
+    :config
+    (progn 
+      (add-to-list 'auto-mode-alist '("\\.json$" . json-mode))))
+  (use-package flycheck
+    :ensure t
+    :config
+    (add-hook 'json-mode-hook #'flycheck-mode))
+#+END_SRC
+** Clojure
+#+BEGIN_SRC emacs-lisp
+  (use-package cider
+    :ensure t
+    :pin melpa-stable)
+
+  (add-hook 'clojure-mode-hook 'prettify-symbols-mode)
+  
+  (use-package clojure-mode
+    :mode (("\\.edn$" . clojure-mode))
+    :config
+    (progn
+      (setq clojure-align-forms-automatically t)))
 #+END_SRC
 * Git
 #+BEGIN_SRC emacs-lisp

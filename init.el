@@ -5,7 +5,7 @@
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
    (quote
-    (evil nlinum-relative powerline smart-mode-line-powerline-theme git-gutter magit writegood-mode exec-path-from-shell markdown-mode web-mode yaml-mode auto-complete counsel ace-window org-bullets which-key try use-package))))
+    (evil-org cider flycheck flycheck-mode json-mode csv-mode elpy groovy-mode evil nlinum-relative powerline smart-mode-line-powerline-theme git-gutter magit writegood-mode exec-path-from-shell markdown-mode web-mode yaml-mode auto-complete counsel ace-window org-bullets which-key try use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -18,7 +18,7 @@
 (require 'package)
 (setq package-enable-at-startup nil)
 (add-to-list 'package-archives
-	     '("melpa" . "https://melpa.org/packages/"))
+	     '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 
 (package-initialize)
 
